@@ -108,25 +108,32 @@ A gate is not closed until the post-action confirmation is logged.
   `abort` (close out the run, write artifacts, exit).
 - **Why it exists:** The agent should not silently retry after a halt.
 
-## Gate Matrix by Workflow
+### Gate J — Negative Keyword Addition
 
-| Workflow | A | B | C | D | E | F | G |
-|---|---|---|---|---|---|---|---|
-| W01 audit | ✔ | — | — | — | — | — | — |
-| W02 conv. audit | ✔ | — | — | — | — | — | — |
-| W03 keyword research | ✔ | — | — | — | — | — | — |
-| W04 draft Search | ✔ | ✔ | — | — | — | — | — |
-| W05 publish | (req) | (req) | ✔ | ✔ | — | — | — |
-| W06 draft PMax | ✔ | ✔ | — | — | — | — | — |
-| W07 draft Demand Gen | ✔ | ✔ | — | — | — | — | — |
-| W08 draft Display | ✔ | ✔ | — | — | — | — | — |
-| W09 draft Video | ✔ | ✔ | — | — | — | — | — |
-| W10 neg-kw review | ✔ | — | — | — | — | — | — |
-| W11 budget proposal | ✔ | — | — | — | (propose) | — | — |
-| W12 weekly digest | ✔ | — | — | — | — | — | — |
-| W13 pre-launch QA | (req) | (req) | ✔ | — | — | — | — |
+- **When:** A negative-keyword workflow proposes adding exact negative keywords
+  to a campaign, ad group, or shared negative keyword list.
+- **What the human approves:** The exact scope and count of negative keywords.
+- **Approval format:** `approve negatives <scope>: <count> terms`.
+- **Why it exists:** Adding negatives can reduce delivery and block valuable
+  queries if the scope or match type is wrong.
+
+## Gate Matrix by V1 Workflow
+
+| Workflow | A | B | C | D | E | F | G | J |
+|---|---|---|---|---|---|---|---|---|
+| W01 account audit | ✔ | — | — | — | — | — | — | — |
+| W02 conversion audit | ✔ | — | — | — | — | — | — | — |
+| W03 reporting audit | ✔ | — | — | — | — | — | — | — |
+| W04 Search planning | (rec) | ✔ | — | — | — | — | — | — |
+| W05 Search draft setup | (req) | ✔ | — | — | — | — | — | — |
+| W06 PMax planning | (rec) | ✔ | — | — | — | — | (plan) | — |
+| W07 PMax draft setup | (req) | ✔ | — | — | — | — | (if needed) | — |
+| W08 negative keywords | ✔ | — | — | — | — | — | (if expansion) | ✔ |
+| W09 budget/bidding review | ✔ | — | — | — | (future) | (future) | — | — |
+| W10 final launch review | (req) | (req) | ✔ | ✔ | (if changed) | (if changed) | (if changed) | — |
 
 `(req)` = the gate must already be CLOSED from an earlier workflow.
+`(rec)` = recommended when a recent audit is available.
 
 ## What an Approval Request Looks Like
 

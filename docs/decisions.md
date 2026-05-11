@@ -107,8 +107,9 @@ Google Ads campaigns can be created in *paused* state and only spend money
 once enabled. We exploit this for safety.
 
 Decision:
-Skills that create campaigns always leave them paused. Enabling a campaign is a
-separate, explicitly-gated skill (`publish-and-enable`).
+Draft setup skills stop before final save, publish, enable, or launch. Final
+launch review is the separate, explicitly-gated workflow for any spend-starting
+action.
 
 Consequences:
 - The agent cannot, by construction, start a campaign spending money in a single
@@ -125,7 +126,7 @@ authorization: changing billing, deleting campaigns, changing account access,
 removing conversion goals.
 
 Decision:
-A denylist in `lib/browser-use/denylist.md` enumerates actions the agent must
+The browser-use safety rules and each skill enumerate actions the agent must
 refuse even if asked. The operator can override only via an explicit override
 phrase that names the denylisted action.
 
@@ -164,3 +165,43 @@ reviews locally.
 Consequences:
 - No accidental commit of campaign data.
 - Sharing a run requires an explicit redaction step.
+
+## 2026-05-11: V1 Skill Library Scope
+
+Status: accepted
+
+Context:
+The project needs a complete first version of the skill library before any real
+browser-use execution or Google Ads account access.
+
+Decision:
+V1 contains ten skills: account audit, conversion tracking audit, reporting
+audit, Search planning, Search draft setup, Performance Max planning,
+Performance Max draft setup, negative keywords, budget and bidding review, and
+final launch review.
+
+Consequences:
+- Demand Gen, Display, Video, API reporting, and harness simulation remain
+  future work.
+- Draft setup skills describe browser-use steps but stop before final save,
+  publish, enable, or launch.
+- Final launch review is the only v1 skill that may describe launch execution,
+  and only after Gate C plus exact Gate D campaign/budget authorization.
+
+## 2026-05-11: Static Skill Lint Is Required for V1
+
+Status: accepted
+
+Context:
+The repository is mostly Markdown. Safety regressions are more likely to happen
+in skill wording than code.
+
+Decision:
+`scripts/check.sh --apply` lints skill folders for frontmatter, required
+sections, browser-use safety references, approval-gate language, read-only
+declarations, and output templates.
+
+Consequences:
+- The project can catch missing safety sections without browser automation.
+- The linter is intentionally conservative and can be expanded as the harness
+  grows.

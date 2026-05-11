@@ -1,39 +1,64 @@
-# Project Template
+# Google Ads Setup
 
-Language-neutral starter scaffold for coding projects under `~/Documents/Codex/projects`.
+Google Ads Setup is a local Codex browser-use skill library for safely guiding
+Google Ads audits, planning, draft setup, and launch review workflows.
 
-Use this repository as the first folder for a new project. It is intentionally
-small: the goal is to provide stable operating habits before a language,
-framework, package manager, or deployment target is chosen.
+The project is not an autonomous Google Ads operator. It is a set of Markdown
+skills, references, templates, and human checklists that keep a browser-use
+agent inside explicit safety rails. No skill should log in, change billing,
+start spend, publish campaigns, or change account access without the required
+human approval gate.
 
 ## Structure
 
-- `AGENTS.md`: AI agent working instructions
-- `docs/architecture.md`: system shape, boundaries, and data flow
-- `docs/decisions.md`: decision log
-- `skills/`: Codex browser-use skills for Google Ads workflows
-- `checklists/`: human-facing safety and review checklists
-- `tasks/todo.md`: task list
-- `prompts/initial-brief.md`: project kickoff prompt for a new agent session
-- `scripts/check.sh`: project validation entrypoint
-- `scripts/dev.sh`: local development entrypoint
-- `scripts/session-start.sh`: session startup checklist
-- `scripts/session-close.sh`: session closeout checklist
-- `.gitignore`: common local, cache, build, and secret patterns
+- `AGENTS.md`: AI agent working instructions.
+- `docs/architecture.md`: system shape, boundaries, and data flow.
+- `docs/decisions.md`: decision log.
+- `docs/browser-use-safety.md`: global browser-use safety rules.
+- `docs/google-ads-workflows.md`: workflow catalog and testing model.
+- `docs/approval-gates.md`: human approval gate definitions.
+- `skills/`: Codex browser-use skills for Google Ads workflows.
+- `checklists/`: human-facing review and safety checklists.
+- `tasks/todo.md`: active project task list.
+- `prompts/initial-brief.md`: project kickoff prompt.
+- `scripts/check.sh`: project validation entrypoint.
+- `scripts/dev.sh`: local development entrypoint.
+- `scripts/session-start.sh`: session startup checklist.
+- `scripts/session-close.sh`: session closeout checklist.
 
-## Getting Started
+## V1 Skills
 
-1. Copy this folder to a new project directory.
-2. Fill in the project purpose, commands, and architecture notes.
-3. Replace placeholder scripts with real commands when the stack is known.
-4. Keep `--dry-run` support in project scripts.
-5. Record meaningful technical choices in `docs/decisions.md`.
-6. Keep `tasks/todo.md` current enough that a future session can resume work.
+- `google-ads-account-audit`: strictly read-only account overview, billing
+  status, campaigns, campaign statuses, conversion actions, linked accounts,
+  account access/users, and recommendations audit.
+- `google-ads-conversion-tracking-audit`: strictly read-only conversion goals,
+  conversion actions, GA4/GTM/linking readiness, tag readiness, and recent
+  conversion activity audit.
+- `google-ads-reporting-audit`: strictly read-only reporting review for
+  campaigns, conversions, spend, CPA/ROAS, search terms, assets,
+  recommendations, and account health.
+- `google-ads-search-campaign-planning`: planning-only Search campaign plan for
+  structure, keywords, negative keywords, ads, budget, bidding, locations,
+  languages, landing pages, conversion goals, and gates.
+- `google-ads-search-campaign-draft-setup`: browser-use Search draft setup
+  guidance that stops before final save, publish, enable, or launch.
+- `google-ads-performance-max-planning`: planning-only Performance Max plan for
+  goals, conversion readiness, budget, asset groups, audience signals, final URL
+  settings, brand exclusions, Merchant Center readiness, and gates.
+- `google-ads-performance-max-draft-setup`: browser-use Performance Max draft
+  setup guidance that stops before final save, publish, enable, or launch.
+- `google-ads-negative-keywords`: read-only search term review plus approved
+  negative keyword proposal/addition workflow.
+- `google-ads-budget-and-bidding-review`: read-only/planning review of budgets,
+  bidding strategies, CPA/ROAS, constraints, and proposed changes.
+- `google-ads-final-launch-review`: final pre-launch QA and approval review;
+  publish/enable/launch requires exact campaign and budget confirmation.
 
 ## Commands
 
 ```sh
 ./scripts/check.sh --dry-run
+./scripts/check.sh --apply
 ./scripts/dev.sh --dry-run
 ./scripts/session-start.sh --dry-run
 ./scripts/session-close.sh --dry-run
@@ -45,35 +70,27 @@ All scripts accept:
 - `--apply`: perform the script action.
 - `--help`: show usage.
 
-## Skills
+`scripts/check.sh --apply` verifies required project files, executable scripts,
+skill frontmatter, required skill sections, safety references, output templates,
+read-only declarations, and approval language around publish/enable/launch
+actions.
 
-- `google-ads-account-audit`: read-only browser-use skill for auditing a
-  Google Ads account. It inspects account overview, billing status, campaigns,
-  campaign statuses, conversion actions, linked accounts, account access/users,
-  and recommendations without making changes.
+## Safety Model
 
-`scripts/session-close.sh` has two modes:
+- Read-only audit skills must remain strictly read-only.
+- Planning skills do not run browser automation.
+- Draft setup skills may describe browser-use steps, but must stop before final
+  save, publish, enable, launch, or spend-starting actions.
+- Budget, bidding, targeting expansion, negative keyword additions, and launch
+  actions require explicit human approval gates.
+- Recommendations are read, not applied automatically.
 
-- Without a session name, it preserves the normal handoff checklist behavior:
-  `bash scripts/session-close.sh --dry-run`
-- With a tmux session name, it targets only that tmux session:
-  `bash scripts/session-close.sh --dry-run test-session` prints the tmux close
-  commands, and `bash scripts/session-close.sh --apply test-session` checks that
-  the session exists before closing it.
+## Session Workflow
 
-## Customizing This Template
-
-- Replace placeholder commands only after the project chooses a stack.
-- Add stack-specific setup, check, and dev instructions to this README.
-- Update `AGENTS.md` when the project has conventions agents must follow.
-- Update `docs/architecture.md` when the system shape changes.
-- Keep secrets in local environment files that are ignored by Git.
-
-## Git
-
-This template is intended to be tracked in Git from the beginning. After copying
-it to a new project, check the initial status with:
-
-```sh
-git status --short
-```
+1. Start with `./scripts/session-start.sh --dry-run`.
+2. Read the relevant skill and checklist.
+3. Edit only skills, docs, templates, and checklists unless a task explicitly
+   asks for code.
+4. Run `bash scripts/check.sh --apply` before handoff.
+5. Run `./scripts/session-close.sh --dry-run`.
+6. Report changes, checks, commits, and remaining risks.

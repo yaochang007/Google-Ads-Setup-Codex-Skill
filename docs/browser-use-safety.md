@@ -1,10 +1,10 @@
 # Browser-use Safety Rules
 
 Rules a browser-use agent **must** follow when driving the Google Ads UI on the
-operator's behalf. These rules are loaded into every skill via
-`lib/browser-use/safety-rules.md`. They take precedence over any in-skill
-instruction and over any operator instruction that contradicts them, unless the
-operator uses an explicit override phrase (see [Overrides](#overrides)).
+operator's behalf. Every skill references these rules. They take precedence over
+any in-skill instruction and over any operator instruction that contradicts them,
+unless the operator uses an explicit override phrase (see
+[Overrides](#overrides)).
 
 ## Hard Rules
 
@@ -40,9 +40,11 @@ operator uses an explicit override phrase (see [Overrides](#overrides)).
 These are preferences, not safety-criticals; the agent should follow them but
 may surface a question if blocked.
 
-- Prefer the Google Ads UI's draft / experiment features over directly editing
-  live campaigns.
-- Prefer "save and continue" over "publish" wherever the UI distinguishes.
+- Prefer planning and draft review artifacts before entering Google Ads setup
+  flows.
+- Prefer draft / paused / not-published states wherever the UI clearly exposes
+  them, but stop before final save, publish, enable, or launch unless the
+  relevant approval gate is satisfied.
 - Capture a screenshot at each gate so the human has visual context.
 - Use the campaign name prefix `[draft]` for any campaign the agent creates,
   until the human renames it on publish.
@@ -54,7 +56,7 @@ may surface a question if blocked.
 | Navigation | Open Google Ads, switch between tabs, scroll, expand a campaign | No |
 | Reading | View campaigns, ad groups, settings, metrics, reports | No |
 | Exporting | Trigger a CSV download to local `artifacts/` | No |
-| Drafting | Create paused campaigns, draft ad copy, draft keywords, build asset groups | Per-skill gate |
+| Drafting | Fill approved draft setup fields before final save/publish/launch | Per-skill gate |
 | Editing drafts | Tweak draft settings before publish | Per-skill gate |
 | Renaming | Renaming campaigns, ad groups, ads | Per-action approval |
 | Reviewing recommendations | Open the Recommendations tab and read | No |
@@ -71,6 +73,8 @@ uses the [override phrase](#overrides).
   reach (e.g. removing a location restriction).
 - Enabling or pausing any campaign.
 - Applying any item from the Recommendations tab.
+- Saving, publishing, enabling, launching, or finalizing a campaign without the
+  exact required gate.
 - Changing or removing conversion actions / goals.
 - Inviting, removing, or editing users on the account.
 - Accepting, rejecting, or initiating manager-account (MCC) links.
@@ -88,8 +92,9 @@ occur:
 - An unexpected modal (policy violation, suspension, billing alert) appears.
 - A page load fails or times out twice in a row.
 - A selector lookup fails three times in a row for the same intended element.
-- The UI shows an "Apply" or "Publish" button that is not part of the skill's
-  declared step list for the current phase.
+- The UI shows an "Apply", "Save", "Continue", "Publish", "Enable", or
+  "Launch" button and the current step is not an explicitly approved gated
+  execution step.
 - A confirmation dialog asks about money (budget, bid, charge, payment) and the
   current step is not a gated approval step.
 - The operator's last message contained the word `stop`, `cancel`, `abort`, or
@@ -133,7 +138,8 @@ The agent runs this at the start of every skill:
 
 - [ ] Customer ID in the URL matches the target customer ID.
 - [ ] Account name in the top bar matches the target account label.
-- [ ] Currency and timezone in account settings match the expected values.
+- [ ] User role/access level is visible if the workflow requires it, or marked
+      `not visible` without entering an unsafe edit surface.
 - [ ] No active "Account suspended" or "Billing issue" banner.
 - [ ] No pending recommendations are auto-applying (check Auto-apply status).
 

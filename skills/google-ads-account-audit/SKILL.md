@@ -22,7 +22,33 @@ skill. If any Google Ads page, banner, modal, drawer, or prompt asks to save,
 apply, continue, publish, enable, pause, edit, remove, invite, change billing,
 or confirm an action, stop and ask the human.
 
-## Scope
+## When to use
+
+Use this skill when the human asks for a Google Ads account audit, account
+review, read-only inspection, or current-state snapshot.
+
+## Inputs required
+
+- Target Google Ads account name.
+- Target customer ID, if known.
+- Audit depth: `summary` or `full`.
+- Any account areas the human expects to be present or absent.
+
+## Preflight checks
+
+Before navigating beyond the initial Google Ads page, complete
+`references/preflight.md`.
+
+You must confirm and record:
+
+- Google Ads account name.
+- Customer ID, if visible.
+- User role or access level, if visible.
+
+If the account identity cannot be confirmed, stop and ask the human for
+direction. If the visible customer ID conflicts with the requested target, stop.
+
+## Browser-use workflow
 
 Inspect only these areas:
 
@@ -38,39 +64,6 @@ Inspect only these areas:
 Do not inspect unrelated account sections. If the human asks for a section
 outside this scope, stop and explain that it belongs in a separate read-only
 skill or a future approved workflow.
-
-## Hard Prohibitions
-
-Never do any of the following:
-
-- Create campaigns, ad groups, ads, assets, audiences, keywords, or negatives.
-- Enable or pause campaigns, ad groups, ads, assets, or recommendations.
-- Edit budgets.
-- Change bidding.
-- Edit conversion actions, goals, tracking templates, or attribution settings.
-- Apply recommendations or enable auto-apply.
-- Change billing, payment methods, tax settings, invoices, or billing profiles.
-- Change account access, invite users, remove users, edit roles, or accept links.
-- Save, publish, apply, continue through, or confirm any change.
-
-If a destructive, account-access, or spend-related action appears possible, stop
-before clicking it. Do not test whether a button is safe by clicking it.
-
-## Preflight
-
-Before navigating beyond the initial Google Ads page, complete
-`references/preflight.md`.
-
-You must confirm and record:
-
-- Google Ads account name.
-- Customer ID, if visible.
-- User role or access level, if visible.
-
-If the account identity cannot be confirmed, stop and ask the human for
-direction. If the visible customer ID conflicts with the requested target, stop.
-
-## Workflow
 
 1. Open or stay in the human-provided Google Ads tab.
 2. Confirm the account identity and access level using the preflight reference.
@@ -96,7 +89,31 @@ direction. If the visible customer ID conflicts with the requested target, stop.
 11. Produce the audit report using `references/audit-output-template.md`.
 12. Stop at Gate A - Audit Review. Ask the human to review the audit artifact.
 
-## Browser-Use Safety
+## Human approval gates
+
+- Gate A - Audit Review: required before another workflow treats this audit as
+  the current account snapshot.
+
+Gate A approval does not authorize edits.
+
+## Never do without approval
+
+Never do any of the following:
+
+- Create campaigns, ad groups, ads, assets, audiences, keywords, or negatives.
+- Enable or pause campaigns, ad groups, ads, assets, or recommendations.
+- Edit budgets.
+- Change bidding.
+- Edit conversion actions, goals, tracking templates, or attribution settings.
+- Apply recommendations or enable auto-apply.
+- Change billing, payment methods, tax settings, invoices, or billing profiles.
+- Change account access, invite users, remove users, edit roles, or accept links.
+- Save, publish, apply, continue through, or confirm any change.
+
+If a destructive, account-access, or spend-related action appears possible, stop
+before clicking it. Do not test whether a button is safe by clicking it.
+
+## Stop conditions
 
 - Stop before any destructive, account-access, or spend-related action.
 - Ask human approval if any modal asks to save, apply, continue, confirm, or
@@ -111,7 +128,7 @@ direction. If the visible customer ID conflicts with the requested target, stop.
   accidental edit surface without saving if a safe close or cancel option is
   clearly available; otherwise stop.
 
-## Output
+## Output format
 
 Create an audit report with these sections:
 
@@ -126,8 +143,6 @@ Create an audit report with these sections:
 
 The report should distinguish observed facts from recommendations. Include
 unknowns explicitly rather than guessing.
-
-## Gate A - Audit Review
 
 At the end of the audit, stop and present the report to the human.
 
