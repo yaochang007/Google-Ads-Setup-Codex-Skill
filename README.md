@@ -85,6 +85,15 @@ actions.
   actions require explicit human approval gates.
 - Recommendations are read, not applied automatically.
 
+## License
+
+Licensed under the Apache License, Version 2.0.
+
+Copyright 2026 Vue Tech Pte Ltd, Singapore.
+
+Forks and derivative works must preserve the Apache 2.0 license and retain the
+original copyright and attribution notices required by the license.
+
 ## Session Workflow
 
 1. Start with `./scripts/session-start.sh --dry-run`.
