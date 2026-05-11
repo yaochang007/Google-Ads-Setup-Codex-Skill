@@ -27,11 +27,11 @@ The five skills below are the P0 cut. Each task creates one skill folder under
 using the `superpowers:writing-plans` skill — this todo list captures the
 order, not the implementation steps.
 
-- [ ] **Skill 1: `audit-account` (W01).** Read-only. Walks the agent through
-  capturing a snapshot of the account: campaigns, status, daily budgets,
-  bidding strategies, conversion goals linked, geo + language targeting,
-  active recommendations, auto-apply status, billing-banner state. Output:
-  `audit-summary.md` + `account-snapshot.json`. Gate A only.
+- [x] **Skill 1: `google-ads-account-audit` (W01).** Read-only. Walks the agent through
+  auditing account overview, billing status, existing campaigns, campaign
+  statuses, conversion actions, linked accounts, account access/users, and
+  recommendations. Output: audit report template + human read-only audit
+  checklist. Gate A only.
 
 - [ ] **Skill 2: `audit-conversion-tracking` (W02).** Read-only. Inventories
   conversion actions and goals, flags ones not firing in the last 30 days,

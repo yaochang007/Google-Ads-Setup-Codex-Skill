@@ -11,6 +11,8 @@ framework, package manager, or deployment target is chosen.
 - `AGENTS.md`: AI agent working instructions
 - `docs/architecture.md`: system shape, boundaries, and data flow
 - `docs/decisions.md`: decision log
+- `skills/`: Codex browser-use skills for Google Ads workflows
+- `checklists/`: human-facing safety and review checklists
 - `tasks/todo.md`: task list
 - `prompts/initial-brief.md`: project kickoff prompt for a new agent session
 - `scripts/check.sh`: project validation entrypoint
@@ -42,6 +44,13 @@ All scripts accept:
 - `--dry-run`: print what would happen without changing project state.
 - `--apply`: perform the script action.
 - `--help`: show usage.
+
+## Skills
+
+- `google-ads-account-audit`: read-only browser-use skill for auditing a
+  Google Ads account. It inspects account overview, billing status, campaigns,
+  campaign statuses, conversion actions, linked accounts, account access/users,
+  and recommendations without making changes.
 
 `scripts/session-close.sh` has two modes:
 
