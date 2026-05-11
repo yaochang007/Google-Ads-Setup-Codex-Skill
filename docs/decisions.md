@@ -20,11 +20,11 @@ Consequences:
 
 ## 2026-05-02: Keep Template Language-Neutral
 
-Status: accepted
+Status: superseded by 2026-05-11
 
 Context:
-This repository is a reusable starting point for projects that may use different
-languages, frameworks, and deployment models.
+This repository was a reusable starting point for projects that may use
+different languages, frameworks, and deployment models.
 
 Decision:
 Keep scripts, documentation, and prompts stack-agnostic until a project chooses
@@ -47,3 +47,120 @@ Every shell script supports `--dry-run`, `--apply`, and `--help`.
 Consequences:
 Future project-specific scripts must preserve those options when replacing
 placeholder behavior.
+
+## 2026-05-11: Project Purpose Is Google Ads Setup via Skills + Browser-use
+
+Status: accepted
+
+Context:
+The template has been adopted for a real project: a reusable skill library that
+guides a browser-use agent through Google Ads campaign setup.
+
+Decision:
+Project purpose is locked. Skills live under `skills/<skill-name>/`, are
+Markdown-with-frontmatter, and target the Google Ads web UI (not the Ads API).
+
+Consequences:
+Subsequent docs may reference Google Ads concepts directly. The template-level
+neutrality decision is superseded.
+
+## 2026-05-11: Use Google Ads Web UI, Not the Google Ads API
+
+Status: accepted
+
+Context:
+The Google Ads API would allow direct programmatic control. However it requires
+developer-token approval, credential management, and removes the human from the
+loop. The point of this project is *safe* setup with human approval gates, and
+the operator is already trained on the web UI.
+
+Decision:
+All workflows drive the Google Ads web UI via a browser-use agent.
+
+Consequences:
+- No developer token or API client to manage.
+- Skills must be resilient to UI changes (use semantic selectors, screenshots).
+- The Ads API may be revisited later for *read-only* reporting.
+
+## 2026-05-11: Read-Only Audit Before Any Write
+
+Status: accepted
+
+Context:
+Money-impacting changes need context. Acting blind on an unfamiliar account
+risks breaking active campaigns.
+
+Decision:
+Every write-capable skill must run, or depend on, a read-only audit pass first
+and write an audit artifact the operator can review.
+
+Consequences:
+- Adds time to each workflow.
+- First skill we build is the audit skill; everything else builds on it.
+
+## 2026-05-11: Draft / Publish Separation
+
+Status: accepted
+
+Context:
+Google Ads campaigns can be created in *paused* state and only spend money
+once enabled. We exploit this for safety.
+
+Decision:
+Skills that create campaigns always leave them paused. Enabling a campaign is a
+separate, explicitly-gated skill (`publish-and-enable`).
+
+Consequences:
+- The agent cannot, by construction, start a campaign spending money in a single
+  shot — it has to come back through a separate gate.
+- "Draft" artifacts are reviewable before going live.
+
+## 2026-05-11: Hard Denylist for Destructive Actions
+
+Status: accepted
+
+Context:
+Some actions are too dangerous to do via an agent without specific human
+authorization: changing billing, deleting campaigns, changing account access,
+removing conversion goals.
+
+Decision:
+A denylist in `lib/browser-use/denylist.md` enumerates actions the agent must
+refuse even if asked. The operator can override only via an explicit override
+phrase that names the denylisted action.
+
+Consequences:
+- The agent will sometimes refuse and ask the human to act manually. Accepted.
+
+## 2026-05-11: Skills Format
+
+Status: accepted
+
+Context:
+The project sits inside the Codex / Claude Code skill ecosystem. Existing
+superpowers skills use Markdown with YAML frontmatter (`name`, `description`).
+
+Decision:
+Each skill is a folder under `skills/<skill-name>/` containing `SKILL.md`
+(YAML frontmatter + agent instructions), `checklist.md` (human-facing),
+`inputs.schema.json` (required inputs), and optional `references/`.
+
+Consequences:
+- Skills are easy to lint and copy between projects.
+- The library can later be packaged as a Codex plugin if desired.
+
+## 2026-05-11: Artifacts and State Are Gitignored
+
+Status: accepted
+
+Context:
+Run artifacts (audit reports, draft plans) may contain account-identifying or
+spend-sensitive data.
+
+Decision:
+`artifacts/` and `state/` are gitignored. The skills write to them, the human
+reviews locally.
+
+Consequences:
+- No accidental commit of campaign data.
+- Sharing a run requires an explicit redaction step.
