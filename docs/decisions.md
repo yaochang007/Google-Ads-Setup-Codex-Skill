@@ -48,7 +48,7 @@ Consequences:
 Future project-specific scripts must preserve those options when replacing
 placeholder behavior.
 
-## 2026-05-11: Project Purpose Is Google Ads Setup via Skills + Browser-use
+## 2026-05-11: Project Purpose Is Google-Ads-Setup-Codex-Skill via Skills + Browser-use
 
 Status: accepted
 

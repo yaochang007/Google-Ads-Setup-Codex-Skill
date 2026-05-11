@@ -1,6 +1,6 @@
 # Todo
 
-Project: Google Ads Setup — Codex skill library + browser-use workflow.
+Project: Google-Ads-Setup-Codex-Skill — Codex skill library + browser-use workflow.
 
 See:
 - `docs/architecture.md`

@@ -1,6 +1,6 @@
-# Google Ads Setup
+# Google-Ads-Setup-Codex-Skill
 
-Google Ads Setup is a local Codex browser-use skill library for safely guiding
+Google-Ads-Setup-Codex-Skill is a local Codex browser-use skill library for safely guiding
 Google Ads audits, planning, draft setup, and launch review workflows.
 
 The project is not an autonomous Google Ads operator. It is a set of Markdown

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Google Ads Setup is a reusable **Codex skill library** plus a lightweight
+Google-Ads-Setup-Codex-Skill is a reusable **Codex skill library** plus a lightweight
 **browser-use workflow model** for safely auditing, planning, drafting, and
 reviewing Google Ads setup workflows. The skills guide a browser-use agent
 through the Google Ads web UI only where browser steps are explicitly part of
@@ -107,7 +107,7 @@ human responds.
 ## Repository Layout
 
 ```text
-google-ads-setup/
+Google-Ads-Setup-Codex-Skill/
 ├── AGENTS.md
 ├── README.md
 ├── docs/
